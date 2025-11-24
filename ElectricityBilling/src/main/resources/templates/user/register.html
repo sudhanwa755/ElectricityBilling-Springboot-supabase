@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
-<head><title>Create User</title></head>
+
+<head>
+  <title>Create User</title>
+</head>
+
 <body>
-<h3>Create New User</h3>
-<form method="post" th:action="@{/register}" class="mt-3" th:object="${userForm}">
-  <div class="mb-3">
-    <label class="form-label">Username</label>
-    <input class="form-control" th:field="*{username}" required>
-    <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card-modern border-0 mt-4">
+        <div class="text-center mb-4">
+          <h3 class="fw-bold">Create Account</h3>
+          <p class="text-muted">Join WattWise today</p>
+        </div>
+
+        <form method="post" th:action="@{/register}" th:object="${userForm}">
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase text-muted">Username</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+              <input class="form-control border-start-0 ps-0" th:field="*{username}" placeholder="Choose a username"
+                required>
+            </div>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label small fw-bold text-uppercase text-muted">Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+              <input class="form-control border-start-0 ps-0" type="password" th:field="*{password}"
+                placeholder="Choose a password" required>
+            </div>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+          </div>
+
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+          <button class="btn btn-primary-modern w-100 py-2 mb-3">Create Account</button>
+
+          <div class="text-center">
+            <a class="btn btn-link text-decoration-none text-muted" href="/login">Already have an account? Sign in</a>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Password</label>
-    <input class="form-control" type="password" th:field="*{password}" required>
-    <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Role</label>
-    <select class="form-select" th:field="*{role}">
-      <option value="ROLE_ADMIN">Admin</option>
-      <option value="ROLE_CLERK" selected>Clerk</option>
-      <option value="ROLE_CUSTOMER">Customer</option>
-    </select>
-  </div>
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-  <button class="btn btn-success">Create</button>
-  <a class="btn btn-secondary" href="/dashboard">Cancel</a>
-</form>
+
 </body>
+
 </html>

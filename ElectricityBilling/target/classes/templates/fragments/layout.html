@@ -1,48 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:fragment="html (title, content)">
+
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title th:replace="${title}">WattWise</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>.app-brand{font-weight:700;letter-spacing:.3px}.content-wrap{max-width:1100px}</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/app.css">
 </head>
+
 <body data-bs-theme="light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
-  <div class="container-fluid">
-    <a class="navbar-brand app-brand" href="/dashboard">Electricity Billing</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navs"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="navs">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="/customers">Customers</a></li>
-        <li class="nav-item"><a class="nav-link" href="/tariffs">Tariffs</a></li>
-        <li class="nav-item"><a class="nav-link" href="/readings/new">Readings</a></li>
-      </ul>
-      <div class="d-flex gap-2">
-        <a class="btn btn-primary btn-sm text-light" href="/register">Create User</a>
-        <form th:action="@{/logout}" method="post" class="d-inline">
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-          <button class="btn btn-warning btn-sm" type="submit">Logout</button>
-        </form>
+
+  <!-- Modern Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-modern sticky-top mb-4">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/dashboard">
+        <i class="bi bi-lightning-charge-fill text-gradient"></i> WattWise
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navs">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navs">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="bi bi-speedometer2 me-1"></i>
+              Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/customers"><i class="bi bi-people me-1"></i> Customers</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/tariffs"><i class="bi bi-currency-dollar me-1"></i>
+              Tariffs</a></li>
+          <li class="nav-item"><a class="nav-link" href="/readings/new"><i class="bi bi-plus-circle me-1"></i> Add
+              Reading</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+          <button id="themeToggle" class="btn btn-link nav-link p-0" type="button" title="Toggle theme">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
+          <div class="vr opacity-25 text-muted"></div>
+          <a class="btn btn-primary-modern btn-sm" href="/register">New User</a>
+          <form th:action="@{/logout}" method="post" class="d-inline">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button class="btn btn-outline-danger btn-sm border-0" type="submit"><i
+                class="bi bi-box-arrow-right"></i></button>
+          </form>
+        </div>
       </div>
     </div>
-      <button id="themeToggle" class="btn btn-sm btn-outline-info ms-2" type="button" title="Toggle theme">Dark</button>
-  </div>
-</nav>
-<div class="container content-wrap" th:insert="${content}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </nav>
 
-<script>
-(function(){
-  const key='ebs-theme';
-  const root=document.body;
-  const btn=document.getElementById('themeToggle');
-  function apply(t){ root.setAttribute('data-bs-theme', t); btn.textContent = (t==='dark'?'Light':'Dark'); localStorage.setItem(key,t); }
-  const saved=localStorage.getItem(key) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  apply(saved);
-  btn.addEventListener('click', ()=> apply(root.getAttribute('data-bs-theme')==='dark'?'light':'dark'));
-})();
-</script>
+  <!-- Main Content -->
+  <div class="container content-wrap pb-5" th:insert="${content}"></div>
+
+  <!-- Footer -->
+  <footer class="text-center text-muted py-4 mt-auto border-top border-secondary-subtle">
+    <small>&copy; 2024 WattWise Energy Systems. All rights reserved.</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const key = 'ebs-theme';
+      const root = document.body;
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('i');
+
+      function updateIcon(t) {
+        icon.className = t === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+      }
+
+      function apply(t) {
+        root.setAttribute('data-bs-theme', t);
+        updateIcon(t);
+        localStorage.setItem(key, t);
+      }
+
+      const saved = localStorage.getItem(key) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      apply(saved);
+
+      btn.addEventListener('click', () => apply(root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'));
+    })();
+  </script>
 </body>
+
 </html>

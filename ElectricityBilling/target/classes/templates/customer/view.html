@@ -1,24 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
-<head><title>Customer Details</title></head>
+
+<head>
+  <title>Customer Details</title>
+</head>
+
 <body>
-<h3>Customer</h3>
-<table class="table table-bordered">
-  <tr><th>ID</th><td th:text="${customer.id}"></td></tr>
-  <tr><th>Name</th><td th:text="${customer.name}"></td></tr>
-  <tr><th>Meter No</th><td th:text="${customer.meterNo}"></td></tr>
-  <tr><th>Email</th><td th:text="${customer.email}"></td></tr>
-  <tr><th>Phone</th><td th:text="${customer.phone}"></td></tr>
-  <tr><th>Address</th><td th:text="${customer.address}"></td></tr>
-</table>
-<div class="d-flex gap-2">
-  <a class="btn btn-outline-primary" th:href="@{'/customers/edit/' + ${customer.id}}">Edit</a>
-  <form th:action="@{'/customers/delete/' + ${customer.id}}" method="post" class="d-inline" onsubmit="return confirm('Delete this customer? This cannot be undone.')">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-    <button class="btn btn-outline-danger" type="submit">Delete</button>
-  </form>
-  <a class="btn btn-secondary" href="/customers">Back</a>
-</div>
-<a class="btn btn-secondary mt-3" href="/dashboard">Back</a>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center mb-4">
+        <a href="/customers" class="btn btn-outline-secondary btn-sm me-3"><i class="bi bi-arrow-left"></i> Back</a>
+        <h2 class="fw-bold mb-0">Customer Profile</h2>
+      </div>
+
+      <div class="card-modern border-0 mb-4">
+        <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
+          <div
+            class="avatar bg-primary text-white rounded-circle me-4 d-flex align-items-center justify-content-center fs-2 fw-bold shadow-sm"
+            style="width: 80px; height: 80px;">
+            <span th:text="${#strings.substring(customer.name,0,1)}"></span>
+          </div>
+          <div>
+            <h3 class="fw-bold mb-1" th:text="${customer.name}"></h3>
+            <div class="text-muted"><i class="bi bi-geo-alt me-1"></i> <span th:text="${customer.address}"></span></div>
+          </div>
+          <div class="ms-auto">
+            <span class="badge bg-success-subtle text-success fs-6 px-3 py-2 rounded-pill">Active</span>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label class="text-muted small text-uppercase fw-bold mb-1">Meter Number</label>
+            <div class="fs-5 fw-semibold font-monospace" th:text="${customer.meterNo}"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="text-muted small text-uppercase fw-bold mb-1">Customer ID</label>
+            <div class="fs-5" th:text="${customer.id}"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="text-muted small text-uppercase fw-bold mb-1">Email Address</label>
+            <div class="fs-5"><a th:href="'mailto:' + ${customer.email}" class="text-decoration-none"
+                th:text="${customer.email}"></a></div>
+          </div>
+          <div class="col-md-6">
+            <label class="text-muted small text-uppercase fw-bold mb-1">Phone Number</label>
+            <div class="fs-5" th:text="${customer.phone}"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-3">
+        <a class="btn btn-primary-modern flex-grow-1" th:href="@{'/customers/edit/' + ${customer.id}}">
+          <i class="bi bi-pencil me-2"></i> Edit Profile
+        </a>
+        <form th:action="@{'/customers/delete/' + ${customer.id}}" method="post" class="flex-grow-1"
+          onsubmit="return confirm('Delete this customer? This cannot be undone.')">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <button class="btn btn-outline-danger w-100 h-100" type="submit">
+            <i class="bi bi-trash me-2"></i> Delete Customer
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </body>
+
 </html>
