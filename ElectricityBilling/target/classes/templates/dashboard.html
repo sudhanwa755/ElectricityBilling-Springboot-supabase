@@ -67,13 +67,17 @@
     <div class="col-md-6">
       <div class="card-modern">
         <h5 class="fw-bold mb-3">Consumption Trend</h5>
-        <canvas id="consumptionChart" height="250"></canvas>
+        <div style="position: relative; height: 250px; width: 100%;">
+          <canvas id="consumptionChart"></canvas>
+        </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="card-modern">
         <h5 class="fw-bold mb-3">Revenue Trend</h5>
-        <canvas id="revenueChart" height="250"></canvas>
+        <div style="position: relative; height: 250px; width: 100%;">
+          <canvas id="revenueChart"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -124,95 +128,103 @@
 
   <script th:inline="javascript">
     /*<![CDATA[*/
-    // Chart data from controller
-    const chartLabels = /*[[${chartLabels}]]*/[];
-    const consumptionData = /*[[${consumptionData}]]*/[];
-    const revenueData = /*[[${revenueData}]]*/[];
+    document.addEventListener('DOMContentLoaded', function () {
+      // Chart data from controller
+      const chartLabels = /*[[${chartLabels}]]*/[];
+      const consumptionData = /*[[${consumptionData}]]*/[];
+      const revenueData = /*[[${revenueData}]]*/[];
 
-    let consumptionChartInstance = null;
-    let revenueChartInstance = null;
+      let consumptionChartInstance = null;
+      let revenueChartInstance = null;
 
-    function getThemeColors() {
-      const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-      return {
-        textColor: isDark ? '#f1f5f9' : '#1e293b',
-        gridColor: isDark ? '#334155' : '#e2e8f0'
-      };
-    }
-
-    function createCharts() {
-      if (!chartLabels || chartLabels.length === 0) return;
-
-      const colors = getThemeColors();
-
-      // Consumption Chart
-      const consumptionCtx = document.getElementById('consumptionChart');
-      if (consumptionCtx) {
-        if (consumptionChartInstance) consumptionChartInstance.destroy();
-        consumptionChartInstance = new Chart(consumptionCtx, {
-          type: 'line',
-          data: {
-            labels: chartLabels,
-            datasets: [{
-              label: 'Units Consumed',
-              data: consumptionData,
-              borderColor: '#3b82f6',
-              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-              tension: 0.4,
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: colors.textColor } } },
-            scales: {
-              y: { beginAtZero: true, ticks: { color: colors.textColor }, grid: { color: colors.gridColor } },
-              x: { ticks: { color: colors.textColor }, grid: { color: colors.gridColor } }
-            }
-          }
-        });
+      function getThemeColors() {
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+        return {
+          textColor: isDark ? '#f1f5f9' : '#1e293b',
+          gridColor: isDark ? '#334155' : '#e2e8f0'
+        };
       }
 
-      // Revenue Chart
-      const revenueCtx = document.getElementById('revenueChart');
-      if (revenueCtx) {
-        if (revenueChartInstance) revenueChartInstance.destroy();
-        revenueChartInstance = new Chart(revenueCtx, {
-          type: 'bar',
-          data: {
-            labels: chartLabels,
-            datasets: [{
-              label: 'Revenue',
-              data: revenueData,
-              backgroundColor: 'rgba(34, 197, 94, 0.6)',
-              borderColor: '#22c55e',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: colors.textColor } } },
-            scales: {
-              y: { beginAtZero: true, ticks: { color: colors.textColor }, grid: { color: colors.gridColor } },
-              x: { ticks: { color: colors.textColor }, grid: { color: colors.gridColor } }
+      function createCharts() {
+        if (!chartLabels || chartLabels.length === 0) return;
+
+        const colors = getThemeColors();
+
+        // Consumption Chart
+        const consumptionCtx = document.getElementById('consumptionChart');
+        if (consumptionCtx) {
+          if (consumptionChartInstance) consumptionChartInstance.destroy();
+          consumptionChartInstance = new Chart(consumptionCtx, {
+            type: 'line',
+            data: {
+              labels: chartLabels,
+              datasets: [{
+                label: 'Units Consumed',
+                data: consumptionData,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                fill: true
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { labels: { color: colors.textColor } } },
+              scales: {
+                y: { beginAtZero: true, ticks: { color: colors.textColor }, grid: { color: colors.gridColor } },
+                x: { ticks: { color: colors.textColor }, grid: { color: colors.gridColor } }
+              }
             }
+          });
+        }
+
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart');
+        if (revenueCtx) {
+          if (revenueChartInstance) revenueChartInstance.destroy();
+          revenueChartInstance = new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+              labels: chartLabels,
+              datasets: [{
+                label: 'Revenue',
+                data: revenueData,
+                backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                borderColor: '#22c55e',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { labels: { color: colors.textColor } } },
+              scales: {
+                y: { beginAtZero: true, ticks: { color: colors.textColor }, grid: { color: colors.gridColor } },
+                x: { ticks: { color: colors.textColor }, grid: { color: colors.gridColor } }
+              }
+            }
+          });
+        }
+      }
+
+      // Initialize charts
+      createCharts();
+
+      // Watch for theme changes using MutationObserver
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-bs-theme') {
+            createCharts();
           }
         });
-      }
-    }
+      });
 
-    // Initialize charts on load
-    createCharts();
-
-    // Override toggleTheme to update charts
-    const originalToggleTheme = window.toggleTheme;
-    window.toggleTheme = function () {
-      originalToggleTheme();
-      // Recreate charts with new theme colors
-      setTimeout(createCharts, 100);
-    };
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-bs-theme']
+      });
+    });
     /*]]>*/
   </script>
 

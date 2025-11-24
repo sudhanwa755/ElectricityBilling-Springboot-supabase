@@ -41,18 +41,22 @@ public class HomeController {
     // Recent bills for chart data (last 10)
     List<Bill> recentBills = billRepo.findTop10ByOrderByBillDateDesc();
 
+    // Sort by date ascending for the chart (oldest to newest)
+    List<Bill> chartBills = recentBills.stream()
+        .sorted(Comparator.comparing(Bill::getBillDate))
+        .collect(Collectors.toList());
+
     // Prepare chart data
-    List<String> chartLabels = recentBills.stream()
+    List<String> chartLabels = chartBills.stream()
         .map(b -> b.getBillDate().toString())
-        .sorted(Comparator.naturalOrder())
         .collect(Collectors.toList());
-    List<Integer> consumptionData = recentBills.stream()
+
+    List<Integer> consumptionData = chartBills.stream()
         .map(Bill::getUnits)
-        .sorted(Comparator.naturalOrder())
         .collect(Collectors.toList());
-    List<Double> revenueData = recentBills.stream()
+
+    List<Double> revenueData = chartBills.stream()
         .map(Bill::getTotal)
-        .sorted(Comparator.naturalOrder())
         .collect(Collectors.toList());
 
     // Add attributes for charts
@@ -65,7 +69,11 @@ public class HomeController {
     m.addAttribute("pendingBills", pendingBills);
     m.addAttribute("overdueBills", overdueBills);
     m.addAttribute("monthlyRevenue", monthlyRevenue);
+
+    // Fetch recent customers
+    List<com.example.ebs.entity.Customer> recentCustomers = crepo.findTop5ByOrderByCreatedAtDesc();
     m.addAttribute("recentCustomers", recentCustomers);
+
     m.addAttribute("recentBills", recentBills);
 
     return "dashboard";
