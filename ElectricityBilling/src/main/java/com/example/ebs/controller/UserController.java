@@ -30,7 +30,7 @@ public class UserController {
         User u = User.builder()
                 .username(form.getUsername())
                 .passwordHash(encoder.encode(form.getPassword()))
-                .role(form.getRole()==null || form.getRole().isBlank()? "ROLE_CLERK": form.getRole())
+                .role("ROLE_CUSTOMER")
                 .active(true)
                 .build();
         userRepo.save(u);

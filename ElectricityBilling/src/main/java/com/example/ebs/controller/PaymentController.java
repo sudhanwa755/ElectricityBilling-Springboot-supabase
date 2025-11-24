@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/payments")
@@ -43,7 +44,7 @@ public class PaymentController {
         }
         m.addAttribute("bill", b);
         m.addAttribute("payment", Payment.builder()
-                .bill(b).paidOn(LocalDate.now()).amount(b.getTotal()).method("CASH").build());
+                .bill(b).paymentDate(LocalDateTime.now()).amount(b.getTotal()).method("CASH").build());
         return "payment/form";
     }
 

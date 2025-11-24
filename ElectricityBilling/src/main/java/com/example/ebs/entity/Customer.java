@@ -26,8 +26,7 @@ public class Customer {
   @Column(length=1000)
   private String address;
 
-  @Column(name="meter_no", unique = true, nullable = false, length = 40)
-  @NotBlank
+  @Column(name="meter_no", unique = true, insertable = false, updatable = false)
   private String meterNo;
 
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

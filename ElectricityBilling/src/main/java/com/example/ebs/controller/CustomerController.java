@@ -31,7 +31,7 @@ public class CustomerController {
     existingCustomer.setEmail(customerDetails.getEmail());
     existingCustomer.setPhone(customerDetails.getPhone());
     existingCustomer.setAddress(customerDetails.getAddress());
-    existingCustomer.setMeterNo(customerDetails.getMeterNo());
+    // existingCustomer.setMeterNo(customerDetails.getMeterNo()); // Handled by DB
 
     repo.save(existingCustomer);
     return "redirect:/customers";
@@ -55,7 +55,7 @@ public class CustomerController {
     br.rejectValue("phone","exists","Phone already exists");
     return "customer/form";
   }
-  repo.save(c);
-  return "redirect:/customers";
+  Customer saved = repo.save(c);
+  return "redirect:/customers/" + saved.getId();
 }
 }

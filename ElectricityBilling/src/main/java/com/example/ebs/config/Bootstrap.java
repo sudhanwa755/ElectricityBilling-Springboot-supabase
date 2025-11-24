@@ -14,13 +14,16 @@ import java.util.Optional;
 
 @Configuration
 public class Bootstrap {
+  @org.springframework.beans.factory.annotation.Value("${app.admin.initial-password}")
+  private String adminPassword;
+
   @Bean CommandLineRunner init(UserRepo users, TariffRepo tariffs, PasswordEncoder enc){
     return args -> {
       Optional<User> eu = users.findByUsername("sudhanwa");
       if (eu.isEmpty()){
         users.save(User.builder()
           .username("sudhanwa")
-          .passwordHash(enc.encode("sudhanwa"))
+          .passwordHash(enc.encode(adminPassword))
           .role("ROLE_ADMIN")
           .active(true).build());
       }
