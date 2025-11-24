@@ -14,7 +14,12 @@ public class CustomerController {
   @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/edit/{id}")
   public String edit(@PathVariable("id") Long id, Model m) {
-    m.addAttribute("customer", repo.findById(id).orElseThrow());
+    com.example.ebs.entity.Customer c = repo.findById(id).orElseThrow();
+    if (c.getMeterNo() == null || c.getMeterNo().isBlank()) {
+      c.setMeterNo("M" + System.currentTimeMillis());
+      repo.save(c);
+    }
+    m.addAttribute("customer", c);
     return "customer/edit";
   }
 
@@ -84,7 +89,12 @@ public class CustomerController {
 
   @GetMapping("/{id}")
   public String view(@PathVariable("id") Long id, Model m) {
-    m.addAttribute("customer", repo.findById(id).orElseThrow());
+    com.example.ebs.entity.Customer c = repo.findById(id).orElseThrow();
+    if (c.getMeterNo() == null || c.getMeterNo().isBlank()) {
+      c.setMeterNo("M" + System.currentTimeMillis());
+      repo.save(c);
+    }
+    m.addAttribute("customer", c);
     return "customer/view";
   }
 
@@ -105,6 +115,9 @@ public class CustomerController {
     if (c.getPhone() != null && !c.getPhone().isBlank() && repo.findByPhone(c.getPhone()).isPresent()) {
       br.rejectValue("phone", "exists", "Phone already exists");
       return "customer/form";
+    }
+    if (c.getMeterNo() == null || c.getMeterNo().isBlank()) {
+      c.setMeterNo("M" + System.currentTimeMillis());
     }
     Customer saved = repo.save(c);
     return "redirect:/customers";

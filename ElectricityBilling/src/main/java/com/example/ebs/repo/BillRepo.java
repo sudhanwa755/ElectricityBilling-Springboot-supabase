@@ -9,6 +9,11 @@ import java.util.List;
 public interface BillRepo extends JpaRepository<Bill, Long> {
     long countByStatus(String status);
 
+    long countByStatusIn(java.util.Collection<String> statuses);
+
+    @Query("SELECT COALESCE(SUM(b.total), 0.0) FROM Bill b WHERE b.billDate >= :startDate")
+    double sumTotalByBillDateAfter(LocalDate startDate);
+
     @Query("SELECT b FROM Bill b WHERE b.billDate >= :startDate ORDER BY b.billDate DESC")
     List<Bill> findRecentBills(LocalDate startDate);
 
