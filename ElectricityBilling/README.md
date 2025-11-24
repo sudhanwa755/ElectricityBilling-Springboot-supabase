@@ -1,100 +1,131 @@
-# Electricity Billing System
+<div align="center">
 
-A robust, full-stack electricity billing application built with **Spring Boot** and **Supabase (PostgreSQL)**. This system streamlines customer management, meter reading, bill generation, and payment tracking with a modern, responsive user interface.
+# ⚡ WattWise
+### The Modern Electricity Billing System
 
-## 👤 Author
-- **Name**: Sudhanwa
-- **GitHub**: [sudhanwa755](https://github.com/sudhanwa755)
-- **Repository**: [ElectricityBilling-Springboot-supabase](https://github.com/sudhanwa755/ElectricityBilling-Springboot-supabase)
-- **Email**: [sudhanwalatur@gmail.com](mailto:sudhanwalatur@gmail.com)
+![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3-green?style=for-the-badge&logo=spring-boot)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?style=for-the-badge&logo=bootstrap)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+
+<br />
+
+**WattWise** is a robust, full-stack electricity billing solution designed for efficiency and scale. Built with **Spring Boot** and **Supabase**, it streamlines the entire billing lifecycle—from meter reading to payment tracking—wrapped in a beautiful, dark-mode ready interface.
+
+[Report Bug](https://github.com/sudhanwa755/ElectricityBilling-Springboot-supabase/issues) · [Request Feature](https://github.com/sudhanwa755/ElectricityBilling-Springboot-supabase/issues)
+
+</div>
 
 ---
 
-## 🚀 Key Features
+## 🚀 Why WattWise?
 
-### 🎨 Modern User Experience
-- **Responsive Dashboard**: Real-time statistics, charts, and quick actions.
-- **Dark Mode Support**: Fully integrated dark theme for better accessibility and aesthetics.
-- **Interactive UI**: Built with Thymeleaf and Bootstrap 5 for a seamless experience.
+WattWise isn't just a billing tool; it's a complete management suite.
 
-### 🛠️ Core Functionality
-- **Customer Management**: 
-  - CRUD operations for customer profiles.
-  - **Auto-generated Meter Numbers** (e.g., `M17325...`) for reliable tracking.
-- **Meter Readings**: 
-  - Record current and previous readings.
-  - Automatic validation and consumption calculation.
-- **Billing Engine**: 
-  - Automated bill generation based on tariff slabs.
-  - Support for fixed charges, energy charges, and taxes.
-  - **Bill Repair**: Automatic detection and repair of inconsistent bill data.
-- **Reports**: 
-  - Monthly revenue and usage tracking.
-  - Exportable data formats.
+| 🎨 Modern UX | 🛠️ Powerful Core | 🔒 Enterprise Ready |
+|:---|:---|:---|
+| **Dark Mode**: Native support for light/dark themes. | **Auto-Repair**: Self-healing data consistency logic. | **RBAC**: Secure Admin & User roles. |
+| **Responsive**: Works perfectly on mobile & desktop. | **Smart Billing**: Automated tariff slab calculations. | **Audit Logs**: Track every critical change. |
+| **Interactive**: Real-time charts & dashboards. | **Meter Gen**: Unique ID generation (e.g., `M17325...`). | **Cloud DB**: Scalable PostgreSQL via Supabase. |
 
-### 🔒 Security & Architecture
-- **Role-Based Access Control (RBAC)**: Secure Admin and User roles using Spring Security.
-- **Supabase Integration**: Cloud-hosted PostgreSQL database for scalability.
-- **Data Integrity**: Application-level validation and database constraints.
+---
+
+## 📸 Snapshots
+
+> *Add your screenshots here to showcase the dashboard, billing page, and dark mode!*
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Java 17, Spring Boot 3.3 (Web, Data JPA, Security, Validation)
-- **Database**: PostgreSQL (via Supabase)
-- **Frontend**: Thymeleaf, Bootstrap 5, Chart.js, Bootstrap Icons
-- **Build Tool**: Maven
+<details>
+  <summary><b>Backend</b></summary>
+  <ul>
+    <li>Java 17</li>
+    <li>Spring Boot 3.3 (Web, Data JPA, Security)</li>
+    <li>Hibernate Validator</li>
+  </ul>
+</details>
+
+<details>
+  <summary><b>Frontend</b></summary>
+  <ul>
+    <li>Thymeleaf Template Engine</li>
+    <li>Bootstrap 5 & Bootstrap Icons</li>
+    <li>Chart.js for Analytics</li>
+  </ul>
+</details>
+
+<details>
+  <summary><b>Database & DevOps</b></summary>
+  <ul>
+    <li>PostgreSQL (Supabase)</li>
+    <li>Flyway Migration</li>
+    <li>Maven Build Tool</li>
+  </ul>
+</details>
 
 ---
 
-## ⚙️ Setup & Installation
+## ⚡ Getting Started
 
-### 1. Prerequisites
-- Java Development Kit (JDK) 17 or higher
-- Maven 3.8+
-- A [Supabase](https://supabase.com/) account and project
+Get up and running in less than 5 minutes.
 
-### 2. Clone the Repository
-```bash
-git clone https://github.com/sudhanwa755/ElectricityBilling-Springboot-supabase.git
-cd ElectricityBilling-Springboot-supabase
-```
+### Prerequisites
+*   Java JDK 17+
+*   Maven 3.8+
+*   Supabase Account
 
-### 3. Configure Database
-Update `src/main/resources/application.properties` with your Supabase credentials:
+### Installation
 
-```properties
-spring.datasource.url=jdbc:postgresql://<YOUR_SUPABASE_HOST>:5432/postgres?sslmode=require
-spring.datasource.username=<YOUR_DB_USER>
-spring.datasource.password=<YOUR_DB_PASSWORD>
+1.  **Clone the repo**
+    ```bash
+    git clone https://github.com/sudhanwa755/ElectricityBilling-Springboot-supabase.git
+    cd ElectricityBilling-Springboot-supabase
+    ```
 
-# JPA Configuration
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
+2.  **Configure Database**
+    Update `src/main/resources/application.properties`:
+    ```properties
+    spring.datasource.url=jdbc:postgresql://<YOUR_HOST>:5432/postgres?sslmode=require
+    spring.datasource.username=<YOUR_USER>
+    spring.datasource.password=<YOUR_PASSWORD>
+    ```
 
-### 4. Run the Application
-```bash
-mvn clean spring-boot:run
-```
+3.  **Ignite** 🚀
+    ```bash
+    mvn clean spring-boot:run
+    ```
+    Visit `http://localhost:8082` and log in!
 
-The application will start at `http://localhost:8082` (or the port configured in properties).
+---
+
+## 👤 Author
+
+<div align="center">
+
+**Sudhanwa**
+
+[![GitHub](https://img.shields.io/badge/GitHub-sudhanwa755-181717?style=flat&logo=github)](https://github.com/sudhanwa755)
+[![Email](https://img.shields.io/badge/Email-sudhanwalatur@gmail.com-D14836?style=flat&logo=gmail)](mailto:sudhanwalatur@gmail.com)
+
+</div>
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/sudhanwa755/ElectricityBilling-Springboot-supabase/issues).
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
 ---
 
-## 📝 License
-
-This project is available for use and modification. Please credit the original author.
+<div align="center">
+  <sub>Built with ❤️ by Sudhanwa</sub>
+</div>
