@@ -34,17 +34,18 @@ public class BillController {
         this.pdfService = pdfService;
     }
 
-
     @GetMapping("/bills")
-    public String list(Model model){
+    public String list(Model model) {
         java.util.List<Bill> bills = brepo.findAll();
-        for (Bill b : bills){
-            boolean needs = (b.getTotal()==0 || b.getEnergyCharge()==0 || b.getUnits()==0);
-            if (needs){
+        for (Bill b : bills) {
+            boolean needs = (b.getTotal() == 0 || b.getEnergyCharge() == 0 || b.getUnits() == 0);
+            if (needs) {
                 int units = b.getUnits();
-                java.time.LocalDate date = b.getBillDate()!=null? b.getBillDate() :
-                        (b.getReading()!=null && b.getReading().getPeriodEnd()!=null? b.getReading().getPeriodEnd() : java.time.LocalDate.now());
-                if (b.getReading()!=null){
+                java.time.LocalDate date = b.getBillDate() != null ? b.getBillDate()
+                        : (b.getReading() != null && b.getReading().getPeriodEnd() != null
+                                ? b.getReading().getPeriodEnd()
+                                : java.time.LocalDate.now());
+                if (b.getReading() != null) {
                     units = b.getReading().getCurrentReadingKwh() - b.getReading().getPreviousReadingKwh();
                 }
                 com.example.ebs.service.BillingService.Result res = billing.compute(Math.max(0, units), date);
@@ -53,15 +54,26 @@ public class BillController {
                 b.setFixedCharge(res.fixed);
                 b.setTaxes(res.taxes);
                 b.setTotal(res.total);
-                if (b.getBillNo()==null) b.setBillNo("B"+System.currentTimeMillis());
-                if (b.getBillDate()==null) b.setBillDate(date);
+                if (b.getBillNo() == null)
+                    b.setBillNo("B" + System.currentTimeMillis());
+                if (b.getBillDate() == null)
+                    b.setBillDate(date);
                 brepo.save(b);
             }
         }
+
+        // Calculate stats
+        long paidCount = bills.stream().filter(b -> "PAID".equals(b.getStatus())).count();
+        long pendingCount = bills.stream().filter(b -> "DUE".equals(b.getStatus()) || "OVERDUE".equals(b.getStatus()))
+                .count();
+        double totalRevenue = bills.stream().mapToDouble(Bill::getTotal).sum();
+
         model.addAttribute("bills", bills);
+        model.addAttribute("paidCount", paidCount);
+        model.addAttribute("pendingCount", pendingCount);
+        model.addAttribute("totalRevenue", String.format("%.2f", totalRevenue));
         return "bill/list";
     }
-
 
     @GetMapping("/pdf/{id}")
     public ResponseEntity<byte[]> pdf(@PathVariable("id") Long id) {

@@ -22,10 +22,46 @@
       width: 100%;
       max-width: 400px;
     }
+
+    .login-theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 50px;
+      height: 50px;
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+    }
+
+    .login-theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-color);
+    }
+
+    .login-theme-toggle i {
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      transition: all 0.3s ease;
+    }
   </style>
 </head>
 
 <body data-bs-theme="light">
+
+  <!-- Theme Toggle Button -->
+  <div class="login-theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+    <i class="bi bi-sun-fill theme-icon-sun"></i>
+    <i class="bi bi-moon-stars-fill theme-icon-moon"></i>
+  </div>
 
   <div class="container">
     <div class="row justify-content-center">
@@ -68,39 +104,27 @@
             Don't have an account? <a href="/register" class="fw-semibold text-decoration-none">Create one</a>
           </div>
         </div>
-
-        <div class="text-center mt-4">
-          <button id="themeToggle" class="btn btn-sm btn-link text-muted text-decoration-none">
-            <i class="bi bi-moon-stars-fill me-1"></i> Toggle Theme
-          </button>
-        </div>
       </div>
     </div>
   </div>
 
   <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-bs-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Load saved theme on page load
     (function () {
-      const key = 'ebs-theme';
-      const root = document.body;
-      const btn = document.getElementById('themeToggle');
-      const icon = btn.querySelector('i');
-
-      function updateIcon(t) {
-        icon.className = t === 'dark' ? 'bi bi-sun-fill me-1' : 'bi bi-moon-stars-fill me-1';
-      }
-
-      function apply(t) {
-        root.setAttribute('data-bs-theme', t);
-        updateIcon(t);
-        localStorage.setItem(key, t);
-      }
-
-      const saved = localStorage.getItem(key) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      apply(saved);
-
-      btn.addEventListener('click', () => apply(root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'));
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
     })();
   </script>
+
 </body>
 
 </html>

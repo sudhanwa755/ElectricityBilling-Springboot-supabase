@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
+
+<head>
+    <title>Add Reading</title>
+</head>
+
+<body>
+
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="mb-0 fw-bold">Add Meter Reading</h2>
+            <p class="text-muted mb-0">Enter meter reading details for <span class="fw-semibold"
+                    th:text="${reading.customer?.name}"></span></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card-modern">
+                <form method="post" th:action="@{/readings}">
+                    <input type="hidden" name="customer.id" th:value="${reading.customer?.id}">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Previous Reading (kWh) <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="previousReadingKwh" required min="0">
+                            <div class="form-text">Last recorded meter reading</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Current Reading (kWh) <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="currentReadingKwh" required min="0">
+                            <div class="form-text">Current meter reading</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Period Start</label>
+                            <input type="date" class="form-control" name="periodStart">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Period End</label>
+                            <input type="date" class="form-control" name="periodEnd">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Notes</label>
+                            <textarea class="form-control" name="notes" rows="3"
+                                placeholder="Any additional notes..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit" class="btn btn-primary-modern">
+                            <i class="bi bi-check-circle"></i> Generate Bill
+                        </button>
+                        <a href="/readings/new" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Customers
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card-modern">
+                <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2"></i>Information</h6>
+                <ul class="small mb-0 ps-3">
+                    <li class="mb-2">Current reading must be greater than or equal to previous reading</li>
+                    <li class="mb-2">A bill will be automatically generated based on the consumption</li>
+                    <li class="mb-2">Tariff rates will be applied according to the current active tariff</li>
+                    <li>Period dates are optional but help track billing cycles</li>
+                </ul>
+            </div>
+
+            <div class="card-modern mt-3" th:if="${reading.customer}">
+                <h6 class="fw-bold mb-3">Customer Details</h6>
+                <div class="small">
+                    <div class="mb-2">
+                        <span class="text-muted">Name:</span>
+                        <span class="fw-semibold ms-2" th:text="${reading.customer.name}"></span>
+                    </div>
+                    <div class="mb-2">
+                        <span class="text-muted">Meter No:</span>
+                        <span class="badge bg-light text-dark border ms-2" th:text="${reading.customer.meterNo}"></span>
+                    </div>
+                    <div class="mb-2" th:if="${reading.customer.email}">
+                        <span class="text-muted">Email:</span>
+                        <span class="ms-2" th:text="${reading.customer.email}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

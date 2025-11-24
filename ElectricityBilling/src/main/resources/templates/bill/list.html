@@ -1,44 +1,142 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
-<head><title>Bills</title></head>
+
+<head>
+  <title>Manage Bills</title>
+</head>
+
 <body>
-<div class="d-flex justify-content-between align-items-center mb-2">
-  <h3>Bills</h3>
-  <div class="btn-group">
-    <form th:action="@{/billing/markAllPaid}" method="post" class="d-inline">
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-      <button class="btn btn-outline-danger btn-sm" type="submit">Mark All Paid</button>
-    </form>
-    <a class="btn btn-outline-secondary btn-sm" href="/reports">Reports</a>
-    <a class="btn btn-outline-secondary btn-sm" href="/data/export/bills.csv">Export CSV</a>
+
+  <div class="row mb-4 align-items-center">
+    <div class="col">
+      <h2 class="mb-0 fw-bold">Manage Bills</h2>
+      <p class="text-muted mb-0">View and manage all customer bills</p>
+    </div>
   </div>
-</div>
-<table class="table table-striped">
-  <thead><tr><th>#</th><th>Bill No</th><th>Customer</th><th>Date</th><th>Units</th><th>Total</th><th>Status</th><th>Total (₹)</th><th>Actions</th></tr></thead>
-  <tbody>
-    <tr th:each="b : ${bills}">
-      <td th:text="${b.id}"></td>
-      <td th:text="${b.billNo}"></td>
-      <td th:text="${b.customer.name}"></td>
-      <td th:text="${b.billDate}"></td>
-      <td th:text="${b.units}"></td>
-      <td th:text="${b.total}"></td>
-      <td>
-  <span th:if="${b.status == 'PAID'}">✅ PAID</span>
-  <span th:if="${b.status != 'PAID'}">⏳ DUE</span>
-</td>
-<td th:text="${b.total}"></td>
-      <td class="d-flex gap-2">
-        <a class="btn btn-sm btn-outline-primary" th:href="@{'/billing/pdf/' + ${b.id}}">PDF</a>
-        <form th:if="${b.status != 'PAID'}" th:action="@{'/billing/markPaid/' + ${b.id}}" method="post" class="d-inline">
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-          <button class="btn btn-sm btn-success" type="submit">Mark Paid</button>
-        </form>
-        <a class="btn btn-sm btn-outline-success" th:href="@{'/payments/new/' + ${b.id}}">Pay</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<a class="btn btn-secondary" href="/dashboard">Back</a>
+
+  <!-- Stats Grid -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card-modern text-center">
+        <div class="text-muted small mb-1">Total Bills</div>
+        <div class="display-6 fw-bold" th:text="${bills != null ? bills.size() : 0}">0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card-modern text-center">
+        <div class="text-muted small mb-1">Paid</div>
+        <div class="display-6 fw-bold text-success" th:text="${paidCount != null ? paidCount : 0}">0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card-modern text-center">
+        <div class="text-muted small mb-1">Pending</div>
+        <div class="display-6 fw-bold text-warning" th:text="${pendingCount != null ? pendingCount : 0}">0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card-modern text-center">
+        <div class="text-muted small mb-1">Total Revenue</div>
+        <div class="display-6 fw-bold text-primary">₹<span
+            th:text="${totalRevenue != null ? totalRevenue : '0.00'}">0.00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="card-modern mb-4">
+    <div class="input-group">
+      <span class="input-group-text bg-light border-end-0">
+        <i class="bi bi-search"></i>
+      </span>
+      <input type="text" class="form-control border-start-0 ps-0" placeholder="Search by name or email..."
+        id="searchInput">
+    </div>
+  </div>
+
+  <!-- Bills Table -->
+  <div class="card-modern border-0">
+    <div class="table-responsive">
+      <table class="table table-modern align-middle">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Month</th>
+            <th>Units</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="billsTableBody">
+          <tr th:each="bill : ${bills}">
+            <td>
+              <div class="d-flex align-items-center">
+                <div
+                  class="avatar bg-primary-subtle text-primary rounded-circle me-3 d-flex align-items-center justify-content-center"
+                  style="width: 40px; height: 40px;">
+                  <span class="fw-bold" th:text="${#strings.substring(bill.customer.name,0,1)}">C</span>
+                </div>
+                <span class="fw-semibold" th:text="${bill.customer.name}">Customer Name</span>
+              </div>
+            </td>
+            <td class="text-muted" th:text="${bill.customer.email}">email@example.com</td>
+            <td th:text="${#temporals.format(bill.billDate, 'yyyy-MM')}">2025-01</td>
+            <td><span th:text="${bill.units}">0</span> kWh</td>
+            <td class="fw-bold text-primary">₹<span th:text="${#numbers.formatDecimal(bill.total, 1, 2)}">0.00</span>
+            </td>
+            <td class="text-muted" th:text="${#temporals.format(bill.billDate, 'M/d/yyyy')}">1/1/2025</td>
+            <td>
+              <span th:if="${bill.status == 'PAID'}" class="badge bg-success-subtle text-success border border-success">
+                <i class="bi bi-check-circle-fill me-1"></i><span th:text="${bill.status}">PAID</span>
+              </span>
+              <span th:if="${bill.status == 'DUE'}" class="badge bg-warning-subtle text-warning border border-warning">
+                <i class="bi bi-clock-fill me-1"></i><span th:text="${bill.status}">DUE</span>
+              </span>
+              <span th:if="${bill.status == 'OVERDUE'}" class="badge bg-danger-subtle text-danger border border-danger">
+                <i class="bi bi-exclamation-circle-fill me-1"></i><span th:text="${bill.status}">OVERDUE</span>
+              </span>
+            </td>
+            <td class="text-end">
+              <a th:href="@{'/billing/pdf/' + ${bill.id}}" class="btn btn-sm btn-outline-primary me-1"
+                title="Download PDF">
+                <i class="bi bi-file-pdf"></i>
+              </a>
+              <form th:if="${bill.status == 'DUE' || bill.status == 'OVERDUE'}" class="d-inline"
+                th:action="@{'/billing/markPaid/' + ${bill.id}}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="btn btn-sm btn-outline-success" type="submit" title="Mark as Paid">
+                  <i class="bi bi-check-circle"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(bills)}">
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
+              No bills found. Add readings to generate bills.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Simple client-side search
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const rows = document.querySelectorAll('#billsTableBody tr');
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+      });
+    });
+  </script>
+
 </body>
+
 </html>
