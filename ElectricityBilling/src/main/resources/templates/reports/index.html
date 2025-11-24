@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
+<head><title>Reports</title></head>
+<body>
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h3>Reports</h3>
+  <div class="btn-group">
+    <a class="btn btn-outline-secondary btn-sm" href="/data/export/customers.csv">Export Customers CSV</a>
+    <a class="btn btn-outline-secondary btn-sm" href="/data/export/bills.csv">Export Bills CSV</a>
+    <a class="btn btn-outline-secondary btn-sm" href="/reports/excel">Download Excel</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h5>Monthly Revenue (last 6 months)</h5>
+    <table class="table table-sm table-striped">
+      <thead><tr><th>Month</th><th>Revenue</th></tr></thead>
+      <tbody>
+        <tr th:each="e : ${revenue}">
+          <td th:text="${e.key}"></td>
+          <td th:text="${e.value}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <h5>Monthly Usage (kWh)</h5>
+    <table class="table table-sm table-striped">
+      <thead><tr><th>Month</th><th>Units</th></tr></thead>
+      <tbody>
+        <tr th:each="e : ${usage}">
+          <td th:text="${e.key}"></td>
+          <td th:text="${e.value}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<a class="btn btn-secondary mt-3" href="/dashboard">Back</a>
+</body>
+</html>

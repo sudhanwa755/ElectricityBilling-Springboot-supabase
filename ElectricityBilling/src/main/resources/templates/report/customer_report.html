@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
+<head><title>Customer Report</title></head>
+<body>
+<h3>Customer Report</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Sr No</th>
+      <th>Customer No</th>
+      <th>Customer Name</th>
+      <th>Latest Reading Period</th>
+      <th>Latest Bill</th>
+      <th>Report</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="row, itStat : ${rows}">
+      <td th:text="${itStat.index + 1}"></td>
+      <td th:text="${row['customer'].meterNo}"></td>
+      <td th:text="${row['customer'].name}"></td>
+      <td th:text="${row['latestReading'] != null ? (row['latestReading'].periodStart + ' to ' + row['latestReading'].periodEnd) : '—'}"></td>
+      <td>
+        <span th:if="${row['latestBill'] != null}" th:text="${row['latestBill'].billNo + ' | ' + (row['latestBill'].status == 'PAID' ? '✅ PAID' : '⏳ DUE')}"></span>
+        <span th:if="${row['latestBill'] == null}">No bill</span>
+      </td>
+      <td>
+        <a class="btn btn-sm btn-outline-primary" th:if="${row['latestBill'] != null}" th:href="@{'/billing/pdf/' + ${row['latestBill'].id}}">Download Bill</a>
+        <a class="btn btn-sm btn-success" th:if="${row['latestBill'] == null and row['latestReading'] != null}" th:href="@{'/billing/generate/' + ${row['latestReading'].id}}">Generate Bill</a>
+        <span class="text-muted" th:if="${row['latestBill'] == null and row['latestReading'] == null}">No data</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<a class="btn btn-secondary mt-3" href="/dashboard">Back</a>
+</body>
+</html>

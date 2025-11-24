@@ -1,0 +1,4 @@
+:root{ --radius-xl: 1rem; }
+.card, .btn { border-radius: var(--radius-xl); }
+.table { border-radius: var(--radius-xl); overflow:hidden; }
+.navbar { box-shadow: 0 2px 8px rgba(0,0,0,.1); }

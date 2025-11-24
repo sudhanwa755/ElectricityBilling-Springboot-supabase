@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
+<head><title>New Customer</title></head>
+<body>
+<h3>Add Customer</h3>
+<form method="post" th:action="@{/customers}" th:object="${customer}">
+  <div class="mb-3"><label class="form-label">Name</label><input class="form-control" th:field="*{name}" required></div>
+  <div class="mb-3"><label class="form-label">Meter No</label><input class="form-control" th:field="*{meterNo}" required><div class="text-danger" th:if="${#fields.hasErrors('meterNo')}" th:errors="*{meterNo}"></div></div>
+  <div class="mb-3"><label class="form-label">Email</label><input class="form-control" th:field="*{email}"><div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div></div>
+  <div class="mb-3"><label class="form-label">Phone</label><input class="form-control" th:field="*{phone}"><div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div></div>
+  <div class="mb-3"><label class="form-label">Address</label><textarea class="form-control" th:field="*{address}"></textarea></div>
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+  <button class="btn btn-success">Save</button>
+  <a class="btn btn-secondary" href="/customers">Cancel</a>
+</form>
+<a class="btn btn-secondary mt-3" href="/dashboard">Back</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
+<head><title th:text="'Bill ' + ${bill.billNo}">Bill</title></head>
+<body>
+<h3 th:text="'Bill #' + ${bill.billNo}"></h3>
+<table class="table">
+  <tr><th>Customer</th><td th:text="${bill.customer.name}"></td></tr>
+  <tr><th>Bill Date</th><td th:text="${bill.billDate}"></td></tr>
+  <tr><th>Units</th><td th:text="${bill.units}"></td></tr>
+  <tr><th>Energy Charge</th><td th:text="${bill.energyCharge}"></td></tr>
+  <tr><th>Fixed Charge</th><td th:text="${bill.fixedCharge}"></td></tr>
+  <tr><th>Taxes</th><td th:text="${bill.taxes}"></td></tr>
+  <tr><th>Total</th><td th:text="${bill.total}"></td></tr>
+  <tr><th>Status</th><td th:text="${bill.status}"></td></tr>
+
+<tr><th>Energy Charge (₹)</th><td th:text="${bill.energyCharge}"></td></tr>
+<tr><th>Fixed Charge (₹)</th><td th:text="${bill.fixedCharge}"></td></tr>
+<tr><th>Taxes (₹)</th><td th:text="${bill.taxes}"></td></tr>
+<tr><th><strong>Total (₹)</strong></th><td><strong th:text="${bill.total}"></strong></td></tr>
+</table>
+
+<a class="btn btn-secondary" href="/dashboard">Back</a>
+</body>
+</html>
