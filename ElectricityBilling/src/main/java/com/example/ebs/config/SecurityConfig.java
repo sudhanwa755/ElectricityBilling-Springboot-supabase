@@ -13,22 +13,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Bean public PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
-    @Bean public DaoAuthenticationProvider authProvider(AppUserDetailsService uds, PasswordEncoder enc){
-        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
-        p.setUserDetailsService(uds); p.setPasswordEncoder(enc); return p;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
-    @Bean public SecurityFilterChain filter(HttpSecurity http) throws Exception {
+
+    @Bean
+    public DaoAuthenticationProvider authProvider(AppUserDetailsService uds, PasswordEncoder enc) {
+        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
+        p.setUserDetailsService(uds);
+        p.setPasswordEncoder(enc);
+        return p;
+    }
+
+    @Bean
+    public SecurityFilterChain filter(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**","/*.css","/js/**","/images/**","/h2-console/**","/register","/login").permitAll()
+                .requestMatchers("/css/**", "/*.css", "/js/**", "/images/**", "/h2-console/**", "/register", "/login")
+                .permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/my/**").hasAnyRole("CUSTOMER","ADMIN","CLERK")
-                .requestMatchers("/billing/**","/payments/**","/reports/**","/data/**").hasAnyRole("ADMIN","CLERK")
+                .requestMatchers("/my/**").hasAnyRole("CUSTOMER", "ADMIN", "CLERK")
+                .requestMatchers("/billing/**", "/payments/**", "/reports/**", "/data/**").hasAnyRole("ADMIN", "CLERK")
                 .anyRequest().authenticated())
-            .formLogin(form -> form.loginPage("/login").permitAll().defaultSuccessUrl("/dashboard", true))
-            .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?out").permitAll())
-            .headers(h->h.frameOptions(f->f.disable()))
-            .csrf(csrf->csrf.ignoringRequestMatchers("/h2-console/**"));
+                .formLogin(form -> form.loginPage("/login").permitAll().defaultSuccessUrl("/dashboard", true))
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?out").permitAll())
+                .headers(h -> h.frameOptions(f -> f.disable()))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
         return http.build();
     }
 }
