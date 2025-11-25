@@ -39,32 +39,20 @@ WattWise isn't just a billing tool; it's a complete management suite.
 
 ## 🛠️ Tech Stack
 
-<details>
-  <summary><b>Backend</b></summary>
-  <ul>
-    <li>Java 17</li>
-    <li>Spring Boot 3.3 (Web, Data JPA, Security)</li>
-    <li>Hibernate Validator</li>
-  </ul>
-</details>
+### Backend
+* Java 17
+* Spring Boot 3.3 (Web, Data JPA, Security)
+* Hibernate Validator
 
-<details>
-  <summary><b>Frontend</b></summary>
-  <ul>
-    <li>Thymeleaf Template Engine</li>
-    <li>Bootstrap 5 & Bootstrap Icons</li>
-    <li>Chart.js for Analytics</li>
-  </ul>
-</details>
+### Frontend
+* Thymeleaf Template Engine
+* Bootstrap 5 & Bootstrap Icons
+* Chart.js for Analytics
 
-<details>
-  <summary><b>Database & DevOps</b></summary>
-  <ul>
-    <li>PostgreSQL (Supabase)</li>
-    <li>Flyway Migration</li>
-    <li>Maven Build Tool</li>
-  </ul>
-</details>
+### Database & DevOps
+* PostgreSQL (Supabase)
+* Flyway Migration
+* Maven Build Tool
 
 ---
 
