@@ -1,52 +1,145 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: html (~{::title}, ~{::body})">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Create User</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create User - WattWise</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--bg-body);
+    }
+
+    .register-card {
+      width: 100%;
+      max-width: 450px;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+    }
+
+    [data-bs-theme="dark"] .theme-toggle {
+      background: #1e293b;
+      border-color: #334155;
+      color: #94a3b8;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(45deg);
+      background: #f8fafc;
+      color: #3b82f6;
+    }
+
+    [data-bs-theme="dark"] .theme-toggle:hover {
+      background: #0f172a;
+    }
+  </style>
 </head>
 
-<body>
+<body data-bs-theme="light">
 
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card-modern border-0 mt-4">
-        <div class="text-center mb-4">
-          <h3 class="fw-bold">Create Account</h3>
-          <p class="text-muted">Join WattWise today</p>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+    <i class="bi bi-sun-fill theme-icon-sun"></i>
+    <i class="bi bi-moon-stars-fill theme-icon-moon" style="display: none;"></i>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card-modern register-card mx-auto border-0 mt-4">
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Create Account</h3>
+            <p class="text-muted">Join WattWise today</p>
+          </div>
+
+          <form method="post" th:action="@{/register}" th:object="${userForm}">
+            <div class="mb-3">
+              <label class="form-label-modern">Username</label>
+              <div class="input-group-modern">
+                <input class="form-control-modern" th:field="*{username}" placeholder="Choose a username" required>
+              </div>
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label-modern">Password</label>
+              <div class="input-group-modern">
+                <input class="form-control-modern" type="password" th:field="*{password}"
+                  placeholder="Choose a password" required>
+              </div>
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+              </div>
+            </div>
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <button class="btn-modern mb-3">Create Account</button>
+
+            <div class="text-center">
+              <a class="login-link" href="/login">Already have an account? Sign in</a>
+            </div>
+          </form>
         </div>
-
-        <form method="post" th:action="@{/register}" th:object="${userForm}">
-          <div class="mb-3">
-            <label class="form-label small fw-bold text-uppercase text-muted">Username</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
-              <input class="form-control border-start-0 ps-0" th:field="*{username}" placeholder="Choose a username"
-                required>
-            </div>
-            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label small fw-bold text-uppercase text-muted">Password</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
-              <input class="form-control border-start-0 ps-0" type="password" th:field="*{password}"
-                placeholder="Choose a password" required>
-            </div>
-            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-          </div>
-
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
-          <button class="btn btn-primary-modern w-100 py-2 mb-3">Create Account</button>
-
-          <div class="text-center">
-            <a class="btn btn-link text-decoration-none text-muted" href="/login">Already have an account? Sign in</a>
-          </div>
-        </form>
       </div>
     </div>
   </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-bs-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcons(newTheme);
+    }
+
+    function updateThemeIcons(theme) {
+      const sunIcon = document.querySelector('.theme-icon-sun');
+      const moonIcon = document.querySelector('.theme-icon-moon');
+      if (theme === 'dark') {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    }
+
+    // Load saved theme on page load
+    (function () {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      updateThemeIcons(savedTheme);
+    })();
+  </script>
 
 </body>
 

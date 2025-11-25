@@ -23,8 +23,14 @@
     --body-before-bg: linear-gradient(45deg, #4d1a9c, #1a4f9c);
     --body-after-bg: linear-gradient(45deg, #b32b2b, #b39b1a);
 }
+
 .dark-mode .text-muted {
-    color: #c1c9d1 !important; 
+    color: #c1c9d1 !important;
+}
+
+.dark-mode .form-control::placeholder {
+    color: #a0a0a0;
+    opacity: 1;
 }
 
 body {
@@ -39,7 +45,8 @@ body {
     transition: background-color 0.5s ease;
 }
 
-body::before, body::after {
+body::before,
+body::after {
     content: '';
     position: absolute;
     z-index: -1;
@@ -66,13 +73,23 @@ body::after {
 }
 
 @keyframes move-up {
-    from { transform: translateY(0) translateX(0); }
-    to { transform: translateY(50px) translateX(50px); }
+    from {
+        transform: translateY(0) translateX(0);
+    }
+
+    to {
+        transform: translateY(50px) translateX(50px);
+    }
 }
 
 @keyframes move-down {
-    from { transform: translateY(0) translateX(0); }
-    to { transform: translateY(-50px) translateX(-50px); }
+    from {
+        transform: translateY(0) translateX(0);
+    }
+
+    to {
+        transform: translateY(-50px) translateX(-50px);
+    }
 }
 
 .login-container {
@@ -101,7 +118,7 @@ body::after {
     font-weight: 800;
     font-size: 2.2rem;
     color: var(--text-color);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: color 0.5s ease;
 }
 
@@ -163,7 +180,7 @@ body::after {
     padding: 8px;
     border-radius: 50%;
     background-color: var(--card-bg-color);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.5s ease;
 }
 
@@ -174,8 +191,18 @@ body::after {
     transition: fill 0.5s ease;
 }
 
-.theme-switcher .moon-icon { display: none; }
-.theme-switcher .sun-icon { display: block; }
+.theme-switcher .moon-icon {
+    display: none;
+}
 
-.dark-mode .theme-switcher .moon-icon { display: block; }
-.dark-mode .theme-switcher .sun-icon { display: none; }
+.theme-switcher .sun-icon {
+    display: block;
+}
+
+.dark-mode .theme-switcher .moon-icon {
+    display: block;
+}
+
+.dark-mode .theme-switcher .sun-icon {
+    display: none;
+}

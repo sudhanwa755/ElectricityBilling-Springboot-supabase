@@ -10,118 +10,460 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/app.css">
   <style>
+    :root {
+      --gh-bg: #0d1117;
+      --gh-text: #c9d1d9;
+      --gh-border: #30363d;
+    }
+
     body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--gh-bg);
+      color: var(--gh-text);
+    }
+
+    .login-container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Left Side - Features */
+    .feature-section {
+      flex: 1;
+      /* Modern Vibrant Gradient: Indigo to Sky Blue */
+      background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem;
+      border-right: 1px solid transparent;
+      transition: background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    [data-bs-theme="dark"] .feature-section {
+      background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+      border-right: 1px solid var(--gh-border);
+    }
+
+    /* Decorative Shapes */
+    .decorative-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      z-index: 0;
+      animation: float 10s infinite ease-in-out;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      /* Vibrant Pink/Purple accent */
+      background: #c084fc;
+      top: -50px;
+      left: -50px;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 400px;
+      height: 400px;
+      /* Vibrant Cyan/Teal accent */
+      background: #2dd4bf;
+      bottom: -100px;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    [data-bs-theme="dark"] .shape-1 {
+      background: #1e40af;
+      opacity: 0.3;
+    }
+
+    [data-bs-theme="dark"] .shape-2 {
+      background: #3730a3;
+      opacity: 0.3;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(30px, 20px);
+      }
+    }
+
+    .feature-list {
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    [data-bs-theme="dark"] .feature-item {
+      background: rgba(13, 17, 23, 0.6);
+      border-color: rgba(48, 54, 61, 0.6);
+    }
+
+    [data-bs-theme="dark"] .feature-item:hover {
+      background: rgba(22, 27, 34, 0.8);
+    }
+
+    .feature-item:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    /* Adjusted index due to header being 1st child in list container */
+    .feature-item:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .feature-item:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--bg-body) 0%, var(--border-color) 100%);
+      margin-right: 1.5rem;
+      color: white;
+      flex-shrink: 0;
+      font-size: 1.25rem;
     }
 
-    .login-card {
+    [data-bs-theme="dark"] .feature-icon {
+      background: rgba(56, 139, 253, 0.15);
+      color: #58a6ff;
+    }
+
+    .feature-text h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem 0;
+      color: #ffffff;
+    }
+
+    .feature-text p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    [data-bs-theme="dark"] .feature-text p {
+      color: #94a3b8;
+    }
+
+    /* Brand Styles */
+    .brand-title-large {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+    }
+
+    .brand-tagline-large {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0;
+      font-weight: 300;
+    }
+
+    [data-bs-theme="dark"] .brand-tagline-large {
+      color: #94a3b8;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Right Side - Form */
+    .form-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 2rem;
+      position: relative;
+      color: #333;
+    }
+
+    [data-bs-theme="dark"] .form-section {
+      background-color: #0f172a;
+      color: #f1f5f9;
+    }
+
+    .login-box {
       width: 100%;
       max-width: 400px;
+      padding: 2rem;
     }
 
+    .brand-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .login-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Theme Toggle */
     .login-theme-toggle {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 50px;
-      height: 50px;
-      background-color: var(--bg-card);
-      border: 2px solid var(--border-color);
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
       transition: all 0.3s ease;
-      box-shadow: var(--shadow-md);
-      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      z-index: 10;
+    }
+
+    [data-bs-theme="dark"] .login-theme-toggle {
+      background: #1e293b;
+      border-color: #334155;
+      color: #94a3b8;
     }
 
     .login-theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary-color);
+      transform: rotate(45deg);
+      background: #f8fafc;
+      color: #3b82f6;
     }
 
-    .login-theme-toggle i {
-      font-size: 1.25rem;
-      color: var(--primary-color);
-      transition: all 0.3s ease;
+    [data-bs-theme="dark"] .login-theme-toggle:hover {
+      background: #0f172a;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+      }
+
+      .feature-section {
+        display: none;
+      }
+
+      .form-section {
+        flex: 1;
+      }
+
+      .login-theme-toggle {
+        top: 1rem;
+        right: 1rem;
+      }
     }
   </style>
 </head>
 
 <body data-bs-theme="light">
 
-  <!-- Theme Toggle Button -->
-  <div class="login-theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-    <i class="bi bi-sun-fill theme-icon-sun"></i>
-    <i class="bi bi-moon-stars-fill theme-icon-moon"></i>
-  </div>
-
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-4">
-        <div class="text-center mb-4">
-          <h1 class="fw-bold display-6"><i class="bi bi-lightning-charge-fill text-gradient"></i> WattWise</h1>
-          <p class="text-muted">Sign in to manage your energy</p>
+  <div class="login-container">
+    <!-- Left Panel: Features -->
+    <div class="feature-section">
+      <div class="decorative-shape shape-1"></div>
+      <div class="decorative-shape shape-2"></div>
+      <div class="feature-list">
+        <div class="brand-header text-start mb-5">
+          <h1 class="brand-title-large">WattWise</h1>
+          <p class="brand-tagline-large">Empowering Your Energy Journey</p>
         </div>
 
-        <div class="card-modern login-card mx-auto">
-          <div class="alert alert-success py-2 text-center small" th:if="${param.registered}">
-            <i class="bi bi-check-circle me-1"></i> Account created! Please sign in.
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-graph-up-arrow"></i>
           </div>
-          <div class="alert alert-danger py-2 text-center small" th:if="${param.error}">
-            <i class="bi bi-exclamation-circle me-1"></i> Invalid credentials.
-          </div>
-
-          <form method="post" th:action="@{/login}">
-            <div class="mb-3">
-              <label class="form-label small fw-bold text-uppercase text-muted">Username</label>
-              <div class="input-group">
-                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
-                <input class="form-control border-start-0 ps-0" name="username" placeholder="Enter your username"
-                  required>
-              </div>
-            </div>
-            <div class="mb-4">
-              <label class="form-label small fw-bold text-uppercase text-muted">Password</label>
-              <div class="input-group">
-                <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
-                <input class="form-control border-start-0 ps-0" type="password" name="password"
-                  placeholder="Enter your password" required>
-              </div>
-            </div>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <button class="btn btn-primary-modern w-100 py-2 mb-3">Sign In</button>
-          </form>
-
-          <div class="text-center text-muted small">
-            Don't have an account? <a href="/register" class="fw-semibold text-decoration-none">Create one</a>
+          <div class="feature-text">
+            <h3>Smart Analytics</h3>
+            <p>Visualize your energy consumption patterns with detailed interactive charts.</p>
           </div>
         </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-emoji-smile"></i>
+          </div>
+          <div class="feature-text">
+            <h3>User Friendliness</h3>
+            <p>Intuitive interface designed for seamless navigation and ease of use.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-lightning"></i>
+          </div>
+          <div class="feature-text">
+            <h3>Real-time Tracking</h3>
+            <p>Monitor your meter readings and tariff changes in real-time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Login Form -->
+    <div class="form-section">
+      <!-- Theme Toggle -->
+      <div class="login-theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+        <i class="bi bi-sun-fill theme-icon-sun"></i>
+        <i class="bi bi-moon-stars-fill theme-icon-moon" style="display: none;"></i>
+      </div>
+
+      <div class="brand-header mb-4 d-md-none">
+        <i class="bi bi-lightning-charge-fill text-primary"></i>
+        <h2 class="mt-2 fw-bold">WattWise</h2>
+      </div>
+
+      <div class="login-box">
+        <div class="mb-5">
+          <h2 class="fw-bold fs-2 mb-2">Welcome Back</h2>
+          <p class="text-muted">Please enter your details to sign in.</p>
+        </div>
+
+        <div class="alert alert-success py-2 text-center small mb-4" th:if="${param.registered}">
+          <i class="bi bi-check-circle me-1"></i> Account created! Please sign in.
+        </div>
+        <div class="alert alert-danger py-2 text-center small mb-4" th:if="${param.error}">
+          <i class="bi bi-exclamation-circle me-1"></i> Invalid credentials.
+        </div>
+
+        <form method="post" th:action="@{/login}">
+          <div class="mb-4">
+            <label class="form-label-modern">Username</label>
+            <input class="form-control-modern" name="username" placeholder="Enter your username" required>
+          </div>
+
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label-modern mb-0">Password</label>
+              <a href="#" class="login-link">Forgot password?</a>
+            </div>
+            <div class="input-group-modern">
+              <input class="form-control-modern" type="password" name="password" id="password"
+                placeholder="Enter your password" required>
+              <i class="bi bi-eye-slash password-toggle" id="togglePasswordIcon" onclick="togglePassword()"></i>
+            </div>
+          </div>
+
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+          <button class="btn-modern mb-4">Sign In</button>
+
+          <div class="text-center">
+            <span class="text-muted small">Don't have an account? </span>
+            <a href="/register" class="login-link ms-1">Create account</a>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <script>
-    // Theme toggle functionality
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('togglePasswordIcon');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('bi-eye-slash');
+        toggleIcon.classList.add('bi-eye');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('bi-eye');
+        toggleIcon.classList.add('bi-eye-slash');
+      }
+    }
+
     function toggleTheme() {
       const html = document.documentElement;
       const currentTheme = html.getAttribute('data-bs-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-bs-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+      updateThemeIcons(newTheme);
+    }
+
+    function updateThemeIcons(theme) {
+      const sunIcon = document.querySelector('.theme-icon-sun');
+      const moonIcon = document.querySelector('.theme-icon-moon');
+      if (theme === 'dark') {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
     }
 
     // Load saved theme on page load
     (function () {
       const savedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      updateThemeIcons(savedTheme);
     })();
   </script>
 
